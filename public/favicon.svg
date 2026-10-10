@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" rx="7" fill="#0A0E17"/>
+  <!-- a guarded gate: a keyhole arch within walls -->
+  <path d="M9 23V13a7 7 0 0 1 14 0v10" fill="none" stroke="#7C83FF" stroke-width="2.2"/>
+  <circle cx="16" cy="15" r="2.4" fill="#3DD68C"/>
+  <rect x="15" y="16.5" width="2" height="5" rx="1" fill="#3DD68C"/>
+  <path d="M6 23h20" stroke="#37425f" stroke-width="2.2" stroke-linecap="round"/>
+</svg>

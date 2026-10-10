@@ -1,0 +1,302 @@
+/* Tessera — a dark "security instrument" design system.
+   Deep ink-navy base; the one bold element is the verdict signal set
+   (allow / step-up / deny). Archivo for display, IBM Plex Sans for body,
+   IBM Plex Mono for signal readouts (codes, hashes, telemetry). */
+
+:root {
+  --bg: #0a0e17;
+  --bg-2: #0d121d;
+  --surface: #121725;
+  --surface-2: #1a2133;
+  --surface-3: #212a40;
+  --line: #262f45;
+  --line-strong: #39445f;
+  --text: #e8ecf6;
+  --muted: #949db8;
+  --faint: #667089;
+
+  --accent: #7c83ff;
+  --accent-bright: #9aa0ff;
+  --accent-dim: #2b2f55;
+
+  --allow: #3dd68c;
+  --stepup: #f2b347;
+  --deny: #fb5e6b;
+  --allow-dim: rgba(61, 214, 140, 0.13);
+  --stepup-dim: rgba(242, 179, 71, 0.13);
+  --deny-dim: rgba(251, 94, 107, 0.13);
+
+  --c-public: #5bb98b;
+  --c-internal: #5aa9f0;
+  --c-confidential: #e0a23c;
+  --c-restricted: #e5556b;
+
+  --r-sm: 7px;
+  --r: 11px;
+  --r-lg: 16px;
+  --maxw: 1180px;
+  --sans: "IBM Plex Sans", system-ui, sans-serif;
+  --display: "Archivo", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, monospace;
+  --shadow: 0 18px 40px -24px rgba(0, 0, 0, 0.8);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ambient gradient so the background isn't a flat black */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(900px 500px at 80% -10%, rgba(124, 131, 255, 0.1), transparent 60%),
+    radial-gradient(700px 500px at -10% 10%, rgba(61, 214, 140, 0.05), transparent 55%);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--display);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+a {
+  color: var(--accent-bright);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+code,
+.mono {
+  font-family: var(--mono);
+}
+
+button {
+  font-family: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-bright);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ---------- buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--line-strong);
+  background: var(--surface-2);
+  color: var(--text);
+  padding: 9px 15px;
+  border-radius: var(--r-sm);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    border-color 0.15s,
+    transform 0.05s;
+}
+.btn:hover {
+  background: var(--surface-3);
+  border-color: var(--accent);
+}
+.btn:active {
+  transform: translateY(1px);
+}
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.btn.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #0a0e17;
+}
+.btn.primary:hover {
+  background: var(--accent-bright);
+}
+.btn.ghost {
+  background: transparent;
+}
+.btn.sm {
+  padding: 6px 11px;
+  font-size: 13px;
+}
+.btn.danger:hover {
+  border-color: var(--deny);
+  color: var(--deny);
+}
+
+/* ---------- inputs ---------- */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+.field label {
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 600;
+}
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: 14px;
+  background: var(--bg-2);
+  border: 1px solid var(--line-strong);
+  color: var(--text);
+  padding: 9px 11px;
+  border-radius: var(--r-sm);
+  width: 100%;
+}
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+/* ---------- cards & surfaces ---------- */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  padding: 20px;
+}
+.card.pad-lg {
+  padding: 26px;
+}
+
+.muted {
+  color: var(--muted);
+}
+.faint {
+  color: var(--faint);
+}
+.tiny {
+  font-size: 12.5px;
+}
+
+/* ---------- badges ---------- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  color: var(--muted);
+  white-space: nowrap;
+}
+.badge .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.clr-public {
+  color: var(--c-public);
+  border-color: color-mix(in srgb, var(--c-public) 40%, transparent);
+}
+.clr-internal {
+  color: var(--c-internal);
+  border-color: color-mix(in srgb, var(--c-internal) 40%, transparent);
+}
+.clr-confidential {
+  color: var(--c-confidential);
+  border-color: color-mix(in srgb, var(--c-confidential) 40%, transparent);
+}
+.clr-restricted {
+  color: var(--c-restricted);
+  border-color: color-mix(in srgb, var(--c-restricted) 40%, transparent);
+}
+
+.verdict {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 14px;
+  padding: 6px 13px;
+  border-radius: 999px;
+}
+.verdict.allow {
+  color: var(--allow);
+  background: var(--allow-dim);
+}
+.verdict.step-up {
+  color: var(--stepup);
+  background: var(--stepup-dim);
+}
+.verdict.deny {
+  color: var(--deny);
+  background: var(--deny-dim);
+}
+
+/* ---------- layout helpers ---------- */
+.row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.row.wrap {
+  flex-wrap: wrap;
+}
+.spread {
+  justify-content: space-between;
+}
+.grid {
+  display: grid;
+  gap: 16px;
+}
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--accent-bright);
+  letter-spacing: 0.04em;
+}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
