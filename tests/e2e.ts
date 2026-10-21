@@ -7,6 +7,7 @@ import handler from "../netlify/functions/api.mts";
 import type { Context } from "../shared/types.ts";
 
 const BASE = "https://tessera.test";
+const TEST_PASSWORD = process.env.TEST_PASSWORD || "Sandbox#2026";
 const ctx = {} as never;
 
 function cookieFrom(res: Response): string | null {
@@ -50,7 +51,7 @@ const managed: Context = {
 };
 
 async function signIn(email: string, context: Context): Promise<string> {
-  const login = await call("login", "POST", { email, password: "Sandbox#2026" });
+  const login = await call("login", "POST", { email, password: TEST_PASSWORD });
   const { code } = (await call(`sandbox-code?userId=${login.body.userId}`, "GET")).body;
   const verify = await call("verify", "POST", { userId: login.body.userId, code, context });
   return cookieFrom(verify.res)!;
@@ -58,7 +59,7 @@ async function signIn(email: string, context: Context): Promise<string> {
 
 section("Sign-in: password then TOTP");
 {
-  const login = await call("login", "POST", { email: "admin@tessera.demo", password: "Sandbox#2026" });
+  const login = await call("login", "POST", { email: "admin@tessera.demo", password: TEST_PASSWORD });
   eq("password step asks for 2FA", login.body.need2fa, true);
   const { code } = (await call(`sandbox-code?userId=${login.body.userId}`, "GET")).body;
   const bad = await call("verify", "POST", { userId: login.body.userId, code: "000000" });
@@ -74,7 +75,7 @@ section("Sign-in: password then TOTP");
 section("Brute force: the account locks");
 {
   for (let i = 0; i < 5; i++) await call("login", "POST", { email: "rohan@tessera.demo", password: "wrong" });
-  const locked = await call("login", "POST", { email: "rohan@tessera.demo", password: "Sandbox#2026" });
+  const locked = await call("login", "POST", { email: "rohan@tessera.demo", password: TEST_PASSWORD });
   eq("locked out after 5 wrong tries", locked.status, 429);
   await (await import("../netlify/lib/data.ts")).clearFails("rohan@tessera.demo");
 }
@@ -104,7 +105,7 @@ section("Step-up re-verification");
   });
   const first = await call("access", "POST", { resourceId: "wiki" }, meera);
   eq("elevated risk asks for step-up", first.body.decision.verdict, "step-up");
-  const login = await call("login", "POST", { email: "meera@tessera.demo", password: "Sandbox#2026" });
+  const login = await call("login", "POST", { email: "meera@tessera.demo", password: TEST_PASSWORD });
   const { code } = (await call(`sandbox-code?userId=${login.body.userId}`, "GET")).body;
   const stepped = await call("stepup", "POST", { resourceId: "wiki", code }, meera);
   eq("access granted after step-up", stepped.body.decision.verdict, "allow");
